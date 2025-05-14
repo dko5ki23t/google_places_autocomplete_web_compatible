@@ -15,6 +15,7 @@ dependencies:
 
   dio: ^5.7.0
   rxdart: ^0.28.0
+  dio_web_adapter: ^2.1.1
 
 dev_dependencies:
   flutter_test:

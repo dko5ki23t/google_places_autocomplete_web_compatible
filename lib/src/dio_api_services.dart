@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:dio/io.dart';
+import 'package:dio_web_adapter/dio_web_adapter.dart';
 import 'package:flutter/foundation.dart';
 
 class DioAPIServices {
@@ -23,13 +24,7 @@ class DioAPIServices {
       ),
     );
     if (kIsWeb) {
-      (_dio.httpClientAdapter as BrowserHttpClientAdapter)
-          .createHttpClient = () {
-        final client = HttpClient(
-          context: SecurityContext(withTrustedRoots: true),
-        );
-        return client;
-      };
+      _dio.httpClientAdapter = BrowserHttpClientAdapter();
     } else {
       (_dio.httpClientAdapter as IOHttpClientAdapter).createHttpClient = () {
         final client = HttpClient(
