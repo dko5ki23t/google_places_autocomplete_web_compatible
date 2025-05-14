@@ -1,14 +1,12 @@
-import 'dart:io';
-
 import 'package:dio/dio.dart';
-import 'package:dio/io.dart';
+import 'package:dio_web_adapter/dio_web_adapter.dart';
 import 'package:flutter/foundation.dart';
 
 class DioAPIServices {
   static DioAPIServices get instance => _instance;
   static final DioAPIServices _instance = DioAPIServices._();
   DioAPIServices._();
-  final Dio _dio = Dio();
+  final DioForBrowser _dio = DioForBrowser();
 
   Dio _launchDio() {
     _dio.interceptors.add(
@@ -22,12 +20,7 @@ class DioAPIServices {
         error: true,
       ),
     );
-    (_dio.httpClientAdapter as IOHttpClientAdapter).createHttpClient = () {
-      final client = HttpClient(
-        context: SecurityContext(withTrustedRoots: true),
-      );
-      return client;
-    };
+    _dio.httpClientAdapter = BrowserHttpClientAdapter();
     _dio.options.connectTimeout = const Duration(seconds: 20);
     _dio.options.receiveTimeout = const Duration(seconds: 20);
     _dio.options.sendTimeout = const Duration(seconds: 30);
