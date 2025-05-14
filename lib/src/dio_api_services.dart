@@ -9,7 +9,7 @@ class DioAPIServices {
   static DioAPIServices get instance => _instance;
   static final DioAPIServices _instance = DioAPIServices._();
   DioAPIServices._();
-  final DioForBrowser _dio = DioForBrowser();
+  final Dio _dio = kIsWeb ? DioForBrowser() : Dio();
 
   Dio _launchDio() {
     _dio.interceptors.add(
@@ -23,16 +23,16 @@ class DioAPIServices {
         error: true,
       ),
     );
-    //if (kIsWeb) {
-    _dio.httpClientAdapter = BrowserHttpClientAdapter();
-    //} else {
-    //  (_dio.httpClientAdapter as IOHttpClientAdapter).createHttpClient = () {
-    //    final client = HttpClient(
-    //      context: SecurityContext(withTrustedRoots: true),
-    //    );
-    //    return client;
-    //  };
-    //}
+    if (kIsWeb) {
+      _dio.httpClientAdapter = BrowserHttpClientAdapter();
+    } else {
+      (_dio.httpClientAdapter as IOHttpClientAdapter).createHttpClient = () {
+        final client = HttpClient(
+          context: SecurityContext(withTrustedRoots: true),
+        );
+        return client;
+      };
+    }
     _dio.options.connectTimeout = const Duration(seconds: 20);
     _dio.options.receiveTimeout = const Duration(seconds: 20);
     _dio.options.sendTimeout = const Duration(seconds: 30);
