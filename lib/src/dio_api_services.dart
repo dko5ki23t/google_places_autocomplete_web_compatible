@@ -22,9 +22,9 @@ class DioAPIServices {
         error: true,
       ),
     );
-    (_dio.httpClientAdapter as kIsWeb
+    (_dio.httpClientAdapter as (kIsWeb
             ? BrowserHttpClientAdapter
-            : IOHttpClientAdapter)
+            : IOHttpClientAdapter))
         .createHttpClient = () {
       final client = HttpClient(
         context: SecurityContext(withTrustedRoots: true),
