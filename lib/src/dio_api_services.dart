@@ -1,7 +1,7 @@
-import 'dart:io';
+//import 'dart:io';
 
 import 'package:dio/dio.dart';
-import 'package:dio/io.dart';
+//import 'package:dio/io.dart';
 import 'package:dio_web_adapter/dio_web_adapter.dart';
 import 'package:flutter/foundation.dart';
 
@@ -23,16 +23,16 @@ class DioAPIServices {
         error: true,
       ),
     );
-    if (kIsWeb) {
-      _dio.httpClientAdapter = BrowserHttpClientAdapter();
-    } else {
-      (_dio.httpClientAdapter as IOHttpClientAdapter).createHttpClient = () {
-        final client = HttpClient(
-          context: SecurityContext(withTrustedRoots: true),
-        );
-        return client;
-      };
-    }
+    //if (kIsWeb) {
+    _dio.httpClientAdapter = BrowserHttpClientAdapter();
+    //} else {
+    //  (_dio.httpClientAdapter as IOHttpClientAdapter).createHttpClient = () {
+    //    final client = HttpClient(
+    //      context: SecurityContext(withTrustedRoots: true),
+    //    );
+    //    return client;
+    //  };
+    //}
     _dio.options.connectTimeout = const Duration(seconds: 20);
     _dio.options.receiveTimeout = const Duration(seconds: 20);
     _dio.options.sendTimeout = const Duration(seconds: 30);
