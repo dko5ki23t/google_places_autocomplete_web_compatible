@@ -22,15 +22,22 @@ class DioAPIServices {
         error: true,
       ),
     );
-    (_dio.httpClientAdapter as (kIsWeb
-            ? BrowserHttpClientAdapter
-            : IOHttpClientAdapter))
-        .createHttpClient = () {
-      final client = HttpClient(
-        context: SecurityContext(withTrustedRoots: true),
-      );
-      return client;
-    };
+    if (kIsWeb) {
+      (_dio.httpClientAdapter as BrowserHttpClientAdapter)
+          .createHttpClient = () {
+        final client = HttpClient(
+          context: SecurityContext(withTrustedRoots: true),
+        );
+        return client;
+      };
+    } else {
+      (_dio.httpClientAdapter as IOHttpClientAdapter).createHttpClient = () {
+        final client = HttpClient(
+          context: SecurityContext(withTrustedRoots: true),
+        );
+        return client;
+      };
+    }
     _dio.options.connectTimeout = const Duration(seconds: 20);
     _dio.options.receiveTimeout = const Duration(seconds: 20);
     _dio.options.sendTimeout = const Duration(seconds: 30);
