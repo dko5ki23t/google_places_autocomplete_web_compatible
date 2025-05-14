@@ -3,7 +3,8 @@ import 'dart:convert';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
-import 'package:google_places_autocomplete/src/dio_api_services.dart';
+import 'package:google_places_autocomplete/src/dio_api_services.dart'
+    if (dart.library.html) 'package:google_places_autocomplete/src/dio_api_services_web.dart';
 import 'package:rxdart/rxdart.dart';
 
 import 'model/place_details.dart';
