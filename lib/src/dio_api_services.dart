@@ -11,17 +11,24 @@ class DioAPIServices {
   final Dio _dio = Dio();
 
   Dio _launchDio() {
-    _dio.interceptors.add(LogInterceptor(
+    _dio.interceptors.add(
+      LogInterceptor(
         request: false,
         requestHeader: false,
         requestBody: false,
         responseHeader: false,
         responseBody: false,
         logPrint: (object) {},
-        error: true));
-    (_dio.httpClientAdapter as IOHttpClientAdapter).createHttpClient = () {
-      final client =
-          HttpClient(context: SecurityContext(withTrustedRoots: true));
+        error: true,
+      ),
+    );
+    (_dio.httpClientAdapter as kIsWeb
+            ? BrowserHttpClientAdapter
+            : IOHttpClientAdapter)
+        .createHttpClient = () {
+      final client = HttpClient(
+        context: SecurityContext(withTrustedRoots: true),
+      );
       return client;
     };
     _dio.options.connectTimeout = const Duration(seconds: 20);
@@ -50,13 +57,15 @@ class DioAPIServices {
     final dio = _launchDio();
 
     try {
-      final response = await dio.post(url,
-          data: data,
-          queryParameters: queryParameters,
-          options: options,
-          cancelToken: cancelToken,
-          onReceiveProgress: onReceiveProgress,
-          onSendProgress: onSendProgress);
+      final response = await dio.post(
+        url,
+        data: data,
+        queryParameters: queryParameters,
+        options: options,
+        cancelToken: cancelToken,
+        onReceiveProgress: onReceiveProgress,
+        onSendProgress: onSendProgress,
+      );
       return response;
     } on DioException catch (e) {
       debugPrint('Dio Error');
@@ -79,12 +88,14 @@ class DioAPIServices {
   }) async {
     final dio = _launchDio();
     try {
-      final response = await dio.get(url,
-          data: data,
-          queryParameters: queryParameters,
-          options: options,
-          cancelToken: cancelToken,
-          onReceiveProgress: onReceiveProgress);
+      final response = await dio.get(
+        url,
+        data: data,
+        queryParameters: queryParameters,
+        options: options,
+        cancelToken: cancelToken,
+        onReceiveProgress: onReceiveProgress,
+      );
       return response;
     } on DioException catch (e) {
       debugPrint('Dio Error');
